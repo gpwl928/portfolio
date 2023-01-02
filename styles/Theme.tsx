@@ -13,6 +13,8 @@ export interface ThemeProps {
   defaultFontFamily: string;
   defaultFontWeight: string;
   mainTextColor: string;
+  textBasicColor1: string;
+  textBasicColor2: string;
   WEB_MAX: number;
   TABLET_MAX: number;
   MOBILE_LANDSCAPE_MAX: number;
@@ -29,6 +31,8 @@ export const InitTheme = (): ThemeProps => {
       defaultFontFamily: 'Malgun Gothic, 맑은 고딕, Arial, sans-serif',
       defaultFontWeight: '700',
       mainTextColor: 'black',
+      textBasicColor1: '#D2D4E4',
+      textBasicColor2: '#7E88BA',
       WEB_MAX: MEDIA_SIZE.WEB_MAX,
       TABLET_MAX: MEDIA_SIZE.TABLET_MAX,
       MOBILE_LANDSCAPE_MAX: MEDIA_SIZE.MOBILE_LANDSCAPE_MAX,
