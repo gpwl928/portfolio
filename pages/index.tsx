@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
+import Header from './src/components/Header';
 
 const Test = styled.div``;
 
@@ -22,6 +23,7 @@ export const Home = () => {
   return (
     <>
       <Main>
+        <Header></Header>
         <Text>Hi</Text>
         <Test>Testttttttt</Test>
       </Main>
