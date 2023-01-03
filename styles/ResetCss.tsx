@@ -81,7 +81,7 @@ const ResetCss: React.FC<Props> = ({ theme }) => {
           padding: 0;
           border: 0;
           outline: 0;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 400;
           color: ${theme.textBasicColor1};
           font-style: normal;
@@ -100,7 +100,7 @@ const ResetCss: React.FC<Props> = ({ theme }) => {
           -webkit-text-size-adjust: 100%;
         }
         body {
-          font-size: 14px;
+          font-size: 16px;
           color: ${theme.textBasicColor1};
           line-height: 1;
           &::-webkit-scrollbar {
@@ -226,7 +226,7 @@ const ResetCss: React.FC<Props> = ({ theme }) => {
           margin: 0;
           padding: 0;
           border: 0;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 400;
           color: #fff;
           font-style: normal;
