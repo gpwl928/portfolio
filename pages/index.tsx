@@ -7,6 +7,8 @@ import About from './src/components/About';
 import Career from './src/components/Career';
 import Project from './src/components/Project';
 import Study from './src/components/Study';
+import Footer from './src/components/Footer';
+
 
 const Main = styled.div`
   padding-top: ${(props): number => props.theme.HEADER_HEIGHT}px;
@@ -71,6 +73,7 @@ export const Home = () => {
         <Project />
         <Study />
       </Main>
+      <Footer />
     </>
   )
 };
