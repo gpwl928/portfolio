@@ -32,7 +32,7 @@ export const InitTheme = (): ThemeProps => {
       mainDisabledColor: 'darkgray',
       defaultFontFamily: 'Malgun Gothic, 맑은 고딕, Arial, sans-serif',
       defaultFontWeight: '700',
-      mainTextColor: 'black',
+      mainTextColor: '#181818',
       textBasicColor1: '#D2D4E4',
       textBasicColor2: '#7E88BA',
       WEB_MAX: MEDIA_SIZE.WEB_MAX,
