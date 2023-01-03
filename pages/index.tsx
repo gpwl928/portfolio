@@ -9,10 +9,13 @@ import Project from './src/components/Project';
 import Study from './src/components/Study';
 
 const Main = styled.div`
-  margin-top: 60px;
+  padding-top: ${(props): number => props.theme.HEADER_HEIGHT}px;
   background: ${(props): string => props.theme.backgroundColor};
   width: 100%;
   height: 100%;
+  @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
+    padding-top: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
+  }
 `;
 
 export const HEADER_ITEM_LIST = [

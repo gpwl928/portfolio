@@ -19,6 +19,8 @@ export interface ThemeProps {
   TABLET_MAX: number;
   MOBILE_LANDSCAPE_MAX: number;
   MOBILE_PORTRAIT_MAX: number;
+  HEADER_HEIGHT: number;
+  MOBILE_HEADER_HEIGHT: number;
 }
 
 export const InitTheme = (): ThemeProps => {
@@ -37,6 +39,8 @@ export const InitTheme = (): ThemeProps => {
       TABLET_MAX: MEDIA_SIZE.TABLET_MAX,
       MOBILE_LANDSCAPE_MAX: MEDIA_SIZE.MOBILE_LANDSCAPE_MAX,
       MOBILE_PORTRAIT_MAX: MEDIA_SIZE.MOBILE_PORTRAIT_MAX,
+      HEADER_HEIGHT: 60,
+      MOBILE_HEADER_HEIGHT: 52,
     }
   )
 }
