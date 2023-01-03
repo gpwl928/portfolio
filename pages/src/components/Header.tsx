@@ -6,9 +6,10 @@ import { useRouter } from 'next/router';
 import { HEADER_ITEM_LIST } from '../../index';
 
 const HamburgerBtnStyle = css`
-  width: 100%;
+  width: 25px;
   height: 2px;
   background: gray;
+  transition: all 0.5s ease;
 `;
 
 const MainHeader = styled.header`
@@ -24,6 +25,7 @@ const MainHeader = styled.header`
   @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
     padding: 0;
     height: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
+    background: #fff;
   }
 `;
 
@@ -47,6 +49,7 @@ const MenuLi = styled.li<{ isActvie: boolean }>`
   align-items: center;
   padding: 12px;
   height: 100%;
+  color: ${(props): string => props.theme.mainTextColor};
   font-size: 18px;
   /* font-weight: 600; */
   text-transform: uppercase;
@@ -64,11 +67,9 @@ const MenuLi = styled.li<{ isActvie: boolean }>`
 `;
 
 const MobileButtonBox = styled.button`
-  display: none;
+  visibility: hidden;
   @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    visibility: visible;
     margin-left: auto;
     width: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
     height: 100%;
@@ -77,24 +78,26 @@ const MobileButtonBox = styled.button`
 
 const MobileButton = styled.div<{ isMobile: boolean }>`
   position: relative;
-  width: 25px;
-  height: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  ${HamburgerBtnStyle}
   &::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: -8px;
     left: 0;
     ${HamburgerBtnStyle}
   }
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -8px;
     left: 0;
     ${HamburgerBtnStyle}
   }  
   ${(props): boolean | SerializedStyles | undefined => 
     props.isMobile && css `
+      background: rgba(0, 0, 0, 0);
       &::before {
         top: 50%;
         left: 50%;
@@ -109,17 +112,22 @@ const MobileButton = styled.div<{ isMobile: boolean }>`
   }
 `;
 
-const MobileButtonLine = styled.div<{ isMobile: boolean }>`
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  ${HamburgerBtnStyle}
-  ${(props): boolean | SerializedStyles | undefined => 
-    props.isMobile && css `
-      display: none;
-    `
+const MobileMenu = styled.div`
+  overflow: auto;
+  position: fixed;
+  top: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
+  width: 100vw;
+  height: calc(100vh - ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px);
+  padding: 12px 20px 60px;
+  background: #fff;
+  @media (min-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX + 1}px) {
+    display: none;
   }
+`;
+
+const MobileMenuUl = styled.ul`
+  padding: 20px;
+  max-width: 300px;
 `;
 
 interface HeaderProps {
@@ -157,9 +165,26 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       </MenuUl>
       <MobileButtonBox onClick={():void => setIsMobileVisible(!isMobileVisible)}>
         <MobileButton isMobile={isMobileVisible}>
-          <MobileButtonLine isMobile={isMobileVisible} />
+          {/* <MobileButtonLine isMobile={isMobileVisible} /> */}
         </MobileButton>
       </MobileButtonBox>
+      {isMobileVisible && (
+        <MobileMenu>
+        <MobileMenuUl>
+          {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
+            return (
+              <MenuLi 
+                key={item.key}
+                isActive={ currentSection === item.key }
+                onClick={():void => onScrollMove(item.key)}
+              >
+                {item.key}
+              </MenuLi>
+            )
+          })}
+        </MobileMenuUl>
+      </MobileMenu>
+      )}
     </MainHeader>
   );
 };
