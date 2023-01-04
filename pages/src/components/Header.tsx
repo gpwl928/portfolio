@@ -47,7 +47,7 @@ const MenuUl = styled.ul`
 const MenuLi = styled.li<{ isActvie: boolean }>`
   display: flex;
   align-items: center;
-  padding: 12px;
+  padding: 16px 12px;
   height: 100%;
   color: ${(props): string => props.theme.mainTextColor};
   font-size: 18px;
