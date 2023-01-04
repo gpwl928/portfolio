@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@emotion/babel-plugin": "^11.10.5",
+    "@svgr/webpack": "^6.5.1",
     "babel-plugin-emotion": "^11.0.0"
   }
 }
