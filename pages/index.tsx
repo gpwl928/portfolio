@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
 import Header from './src/components/Header';
+import Visual from './src/components/Visual';
 import About from './src/components/About';
 import Career from './src/components/Career';
 import Project from './src/components/Project';
@@ -68,6 +69,7 @@ export const Home = () => {
     <>
       <Header currentSection={activeId} />
       <Main>
+        <Visual />
         <About />
         <Career />
         <Project />
