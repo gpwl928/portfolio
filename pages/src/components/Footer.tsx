@@ -13,7 +13,7 @@ const Content = styled.div`
   text-align: center;
 `;
 
-const Right = styled.div`
+const Rights = styled.div`
   margin-top: 8px;
   font-size: 14px;
   font-family: ${(props): string => props.theme.defaultFontFamily};
@@ -47,7 +47,7 @@ const Footer = () => {
             <GitSvg fill="pink" />
           </Icon>
         </Icons>
-        <Right>© 2023 — Website created using Next.js / All rights reserved</Right>
+        <Rights>© 2023 — Website created using Next.js / All rights reserved</Rights>
       </Content>
     </MainFooter>
   );
