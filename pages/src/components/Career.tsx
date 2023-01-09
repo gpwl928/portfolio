@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import SectionTitle from './SectionTitle';
 
 const Section = styled.section`
   padding: 32px 20px;
@@ -12,7 +13,7 @@ const Section = styled.section`
 const Career = () => {
   return (
     <Section id="career">
-      Career
+      <SectionTitle title="career" />
     </Section>
   );
 };
