@@ -25,10 +25,24 @@ const Section = styled.section<{ scrollHeight: number }>`
 `;
 
 const StickyMsgA = styled.p<{ opacityValue: number, translateYValue: number}>`
+  /* opacity: 1; */
+  ${(props): number | SerializedStyles | undefined => 
+    props.opacityValue && css `
+      opacity: ${props.opacityValue}d;
+    `
+  }
+  ${(props): number | SerializedStyles | undefined => 
+    props.translateYValue && css `
+      transform: translate3d(0, ${props.translateYValue}%, 0);
+    `
+  }
+`;
+
+const StickyMsgB = styled.p<{ opacityValue: number, translateYValue: number}>`
+  opacity: 0;
   ${(props): number | SerializedStyles | undefined => 
     props.opacityValue && css `
       opacity: ${props.opacityValue};
-      border: 1px solid red;
     `
   }
   ${(props): number | SerializedStyles | undefined => 
@@ -56,36 +70,63 @@ const StickyElem = styled.div`
     stroke-dashoffset: 1401;
   }
 
-  ${StickyMsgA} {
+  ${StickyMsgA}, ${StickyMsgB} {
     color: white;
     font-size: 10vw;
     font-family: ${(props): string => props.theme.defaultFontFamily};
     font-weight: 600;
     text-transform: uppercase;
-    /* opacity: 0; */
   }
 `;
 
-const sceneInfo = {
-  type: 'sticky',
-  heightNum: 5,
-  scrollHeight: window.innerHeight * 5,
-  objs: {
-    container: document.querySelector('#visual'),
-    messageA: {
-      opacity: 0,
-      translateY: 0
-    }
-  },
-  values: {
-    messageA_opacity_in: [1, 0, {start: 0, end: 0.1}],
-    messageA_translateY_in: [20, 0, {start: 0, end: 0.1}],
-    messageA_opacity_out: [1, 0, {start: 0.15, end: 0.2}],
-    messageA_translateY_out: [0, -20, {start: 0.15, end: 0.2}],
-  }
-}
+// const sceneInfo = {
+//   type: 'sticky',
+//   heightNum: 5,
+//   scrollHeight: window.innerHeight * 5,
+//   objs: {
+//     container: document.querySelector('#visual'),
+//     messageA: {
+//       opacity: 0,
+//       translateY: 0
+//     }
+//   },
+//   values: {
+//     messageA_opacity_in: [1, 0, {start: 0, end: 0.1}],
+//     messageA_translateY_in: [20, 0, {start: 0, end: 0.1}],
+//     messageA_opacity_out: [1, 0, {start: 0.15, end: 0.2}],
+//     messageA_translateY_out: [0, -20, {start: 0.15, end: 0.2}],
+//   }
+// }
 
 const Visual = () => {
+  const [sceneInfo, setSceneInfo] = useState(
+    {
+      type: 'sticky',
+      heightNum: 5,
+      scrollHeight: window.innerHeight * 5,
+      objs: {
+        messageA: {
+          opacity: 1,
+          translateY: 0
+        },
+        // messageB: {
+        //   opacity: 0,
+        //   translateY: 0
+        // }
+      },
+      values: {
+        messageA_opacity_in: [1, 0, {start: 0, end: 0.1}],
+        messageA_translateY_in: [0, -20, {start: 0, end: 0.1}],
+        messageA_opacity_out: [1, 0, {start: 0.15, end: 0.2}],
+        messageA_translateY_out: [0, -20, {start: 0.15, end: 0.2}],
+        // messageB_opacity_in: [0, 1, {start: 0.2, end: 0.3}],
+        // messageB_translateY_in: [0, 20, {start: 0.35, end: 0.45}],
+        // messageB_opacity_out: [1, 0, {start: 0.2, end: 0.3}],
+        // messageB_translateY_out: [0, -20, {start: 0.35, end: 0.45}],
+      }
+    }
+  );
+
   useEffect(() => {
     let enterNewScene = false; // 새로운 scene이 시작된 순간 true
 
@@ -130,17 +171,35 @@ const Visual = () => {
       const yOffset = window.pageYOffset;
       const scrollRatio = yOffset / scrollHeight;
 
-      if (scrollRatio <= 0.2) {
+      if (scrollRatio <= 0.3) {
         // in
-        objs.messageA.opacity = calcValues(values.messageA_opacity_in, yOffset);
-        objs.messageA.translateY = calcValues(values.messageA_translateY_in, yOffset);
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              messageA: {
+                opacity: calcValues(values.messageA_opacity_in, yOffset),
+                translateY: calcValues(values.messageA_translateY_in, yOffset)
+              }
+            }
+          }
+        ));
       } else {
         // out
-        objs.messageA.opacity = calcValues(values.messageA_opacity_out, yOffset);
-        objs.messageA.translateY = calcValues(values.messageA_translateY_out, yOffset);
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              messageA: {
+                opacity: 0,
+                translateY: calcValues(values.messageA_translateY_out, yOffset)
+              }
+            }
+          }
+        ));
       }
 
-      // console.log(yOffset, scrollRatio, objs.messageA.opacity);
+      console.log('✈✈', objs.messageA.opacity);
     }
 
     setLayout();
@@ -161,9 +220,17 @@ const Visual = () => {
           opacityValue={sceneInfo.objs.messageA.opacity}
           translateYValue={sceneInfo.objs.messageA.translateY}
         >
-          Are you
+          Are you curious
         </StickyMsgA>
       </StickyElem>
+      {/* <StickyElem>
+        <StickyMsgB 
+          opacityValue={sceneInfo.objs.messageB.opacity}
+          translateYValue={sceneInfo.objs.messageB.translateY}
+        >
+          about who I am
+        </StickyMsgB>
+      </StickyElem> */}
       {/* <StickyElem>
         <StickyText className='message_b'>curious</StickyText>
       </StickyElem>
