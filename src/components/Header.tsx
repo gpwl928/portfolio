@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
 import { useRouter } from 'next/router';
-import { HEADER_ITEM_LIST } from '../../index';
+import { HEADER_ITEM_LIST } from 'pages/index';
 
 const HamburgerBtnStyle = css`
   width: 25px;

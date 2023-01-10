@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
@@ -66,7 +66,7 @@ const StickyElem = styled.div`
   }
 `;
 
-const SceneInfo = {
+const sceneInfo = {
   type: 'sticky',
   heightNum: 5,
   scrollHeight: window.innerHeight * 5,
@@ -90,17 +90,17 @@ const Visual = () => {
     let enterNewScene = false; // 새로운 scene이 시작된 순간 true
 
     const setLayout = () => {
-      SceneInfo.scrollHeight = window.innerHeight * SceneInfo.heightNum;
+      sceneInfo.scrollHeight = window.innerHeight * sceneInfo.heightNum;
     };
 
     const scrollLoop = () => {
       playAnimation();
-      console.log('opacity😥😥', SceneInfo.objs.messageA.opacity);
+      console.log('opacity😥😥', sceneInfo.objs.messageA.opacity);
     };
 
     const calcValues = (values: any, currentYOffset: number) => {
       let returnValue;
-      const scrollHeight = SceneInfo.scrollHeight;
+      const scrollHeight = sceneInfo.scrollHeight;
       const scrollRatio = currentYOffset / scrollHeight;
 
       if (values.length === 3) {
@@ -124,9 +124,9 @@ const Visual = () => {
     };
 
     const playAnimation = () => {
-      const objs = SceneInfo.objs;
-      const values = SceneInfo.values;
-      const scrollHeight = SceneInfo.scrollHeight;
+      const objs = sceneInfo.objs;
+      const values = sceneInfo.values;
+      const scrollHeight = sceneInfo.scrollHeight;
       const yOffset = window.pageYOffset;
       const scrollRatio = yOffset / scrollHeight;
 
@@ -155,11 +155,11 @@ const Visual = () => {
   })
 
   return (
-    <Section id="visual" scrollHeight={SceneInfo.scrollHeight}>
+    <Section id="visual" scrollHeight={sceneInfo.scrollHeight}>
       <StickyElem>
         <StickyMsgA 
-          opacityValue={SceneInfo.objs.messageA.opacity}
-          translateYValue={SceneInfo.objs.messageA.translateY}
+          opacityValue={sceneInfo.objs.messageA.opacity}
+          translateYValue={sceneInfo.objs.messageA.translateY}
         >
           Are you
         </StickyMsgA>

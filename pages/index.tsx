@@ -1,14 +1,21 @@
+import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
-import Header from './src/components/Header';
-import Visual from './src/components/Visual';
-import About from './src/components/About';
-import Career from './src/components/Career';
-import Project from './src/components/Project';
-import Study from './src/components/Study';
-import Footer from './src/components/Footer';
+import Header from 'src/components/Header';
+// import Visual from 'src/components/Visual';
+import About from 'src/components/About';
+import Career from 'src/components/Career';
+import Project from 'src/components/Project';
+import Study from 'src/components/Study';
+import Footer from 'src/components/Footer';
+const Visual = dynamic(
+  () => import('src/components/Visual'),
+  {
+    ssr: false,
+  }
+);
 
 
 const Main = styled.div`
