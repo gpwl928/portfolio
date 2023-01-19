@@ -22,6 +22,7 @@ const MainHeader = styled.header`
   height: ${(props): number => props.theme.HEADER_HEIGHT}px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: saturate(180%) blur(15px);
+  z-index: 100;
   @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
     padding: 0;
     height: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
@@ -170,20 +171,20 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
       </MobileButtonBox>
       {isMobileVisible && (
         <MobileMenu>
-        <MobileMenuUl>
-          {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
-            return (
-              <MenuLi 
-                key={item.key}
-                isActive={ currentSection === item.key }
-                onClick={():void => onScrollMove(item.key)}
-              >
-                {item.key}
-              </MenuLi>
-            )
-          })}
-        </MobileMenuUl>
-      </MobileMenu>
+          <MobileMenuUl>
+            {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
+              return (
+                <MenuLi 
+                  key={item.key}
+                  isActive={ currentSection === item.key }
+                  onClick={():void => onScrollMove(item.key)}
+                >
+                  {item.key}
+                </MenuLi>
+              )
+            })}
+          </MobileMenuUl>
+        </MobileMenu>
       )}
     </MainHeader>
   );
