@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
+import { useRouter} from 'next/router';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { SerializedStyles } from '@emotion/utils';
@@ -43,8 +44,18 @@ const isBetween = (value: number, floor: number, ceil: number): boolean =>
 
 export const Home = () => {
   const [activeId, setActiveId] = useState('');
+  const [isSticky, setIsSticky] = useState(false);
+
+  const router = useRouter;
 
   useEffect(() => {
+    const setLayout = ():void => {
+      console.log('😊😊😊😊👀👀setLayout');
+      // window.location.hash = '';
+      // scrollTo({top: 0});
+      // setActiveId('');
+    }
+
     const listener = ():void => {
       const scroll = window.pageYOffset;
       const position = HEADER_ITEM_LIST.map((item) => {
@@ -59,10 +70,13 @@ export const Home = () => {
 
       const currentId = position?.id || '';
       setActiveId(currentId);
+      setIsSticky(currentId ? true : false);
     }
 
     listener();
 
+    //TODO: 새로고침시 hash문제 해결하기
+    window.addEventListener('load', setLayout);
     window.addEventListener('resize', listener);
     window.addEventListener('scroll', listener);
 
@@ -74,7 +88,7 @@ export const Home = () => {
 
   return (
     <>
-      <Header currentSection={activeId} />
+      <Header currentSection={activeId} isSticky={isSticky} />
       <Main>
         <Visual />
         <About />

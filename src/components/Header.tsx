@@ -12,7 +12,7 @@ const HamburgerBtnStyle = css`
   transition: all 0.5s ease;
 `;
 
-const MainHeader = styled.header`
+const MainHeader = styled.header<{ isHeader: boolean }>`
   display: flex;
   align-items: center;
   position: fixed;
@@ -21,8 +21,14 @@ const MainHeader = styled.header`
   width: 100%;
   height: ${(props): number => props.theme.HEADER_HEIGHT}px;
   background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
   backdrop-filter: saturate(180%) blur(15px);
   z-index: 100;
+  ${(props): boolean | SerializedStyles | undefined => 
+    !props.isHeader && css `
+      opacity: 0;
+    `
+  }
   @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
     padding: 0;
     height: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
@@ -133,9 +139,10 @@ const MobileMenuUl = styled.ul`
 
 interface HeaderProps {
   currentSection?: string;
+  isSticky?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentSection }) => {
+const Header: React.FC<HeaderProps> = ({ currentSection, isSticky }) => {
   const router = useRouter();
 
   const [isMobileVisible, setIsMobileVisible] = useState(false);
@@ -148,8 +155,11 @@ const Header: React.FC<HeaderProps> = ({ currentSection }) => {
     );
   }
 
+  console.log('HERE HEADER', isSticky);
+  console.log('currentSection', currentSection);
+
   return (
-    <MainHeader>
+    <MainHeader isHeader={isSticky}>
       {/* <Logo>Potofolio</Logo> */}
       <MenuUl>
         {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
