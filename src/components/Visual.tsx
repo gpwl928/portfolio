@@ -25,13 +25,23 @@ const Section = styled.section<{ scrollHeight: number }>`
   }
 `;
 
+const ScrollMsg = styled.p`
+  font-size: 8vw;
+`;
+
+const StickyMsg = styled.p`
+  font-size: 6vw;
+`;
+
 const StickyElem = styled.div<{ 
+  active: boolean,
   svgType?: string, 
   translateYValue?: number, 
   translateXValue?: number, 
   opacityValue?: number, 
   dashOffset?: number 
 }>`
+  display: block;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -39,7 +49,13 @@ const StickyElem = styled.div<{
   transform: translate(-50%, -50%);
   z-index: 10;
 
-  ${(props): number | SerializedStyles | boolean => 
+  ${(props): boolean | SerializedStyles | undefined => 
+    !props.active && css`
+      display: none;
+    `
+  }
+
+  ${(props): boolean | SerializedStyles | undefined => 
     props.opacityValue > -1 && css`
       opacity: ${props.opacityValue};
     `
@@ -76,29 +92,21 @@ ${(props): boolean | number | SerializedStyles | undefined =>
   &:last-of-type {
     transform: translate(-50%, -72%);
   }
-`;
 
-const ScrollMsg = styled.p`
-  color: white;
-  font-size: 8vw;
-  font-family: ${(props): string => props.theme.defaultFontFamily};
-  font-weight: 600;
-  text-transform: uppercase;
-`;
-
-const StickyMsg = styled.p`
-  color: white;
-  font-size: 6vw;
-  font-family: ${(props): string => props.theme.defaultFontFamily};
-  font-weight: 600;
-  text-transform: uppercase;
+  ${ScrollMsg}, ${StickyMsg} {
+    color: white;
+    font-family: ${(props): string => props.theme.defaultFontFamily};
+    font-weight: 600;
+    text-transform: uppercase;
+  }
 `;
 
 const Visual = () => {
+  const [isVisualActive, setIsVisualActive] = useState(true);
   const [sceneInfo, setSceneInfo] = useState(
     {
       heightNum: 5,
-      scrollHeight: window.innerHeight * 5,
+      scrollHeight: 0,
       objs: {
         messageA: {
           opacity: 1,
@@ -130,7 +138,8 @@ const Visual = () => {
         messageB_translateY_in: [-40, -50, {start: 0.16, end: 0.28}],
         messageB_translateY_out: [-50, -70, {start: 0.3, end: 0.45}],
         textSvg_width_inout: [8400, 95, { start: 0.45, end: 0.62 }],
-				textSvg_translateX_inout: [-150, -50, { start: 0.45, end: 0.62 }],
+				textSvg_translateX_inout: [-180, -50, { start: 0.45, end: 0.62 }],
+				// textSvg_translateX_inout: [-150, -50, { start: 0.45, end: 0.62 }],
 				textSvg_translateY_inout: [-57, -50, { start: 0.45, end: 0.62 }],
 				textSvg_opacity_out: [1, 0, { start: 0.78, end: 0.88 }],
         path_dashoffset_in: [1401, 0, { start: 0.62, end: 0.73 }],
@@ -142,8 +151,6 @@ const Visual = () => {
   );
 
   useEffect(() => {
-    let enterNewScene = false; // 새로운 scene이 시작된 순간 true
-
     const setLayout = () => {
       sceneInfo.scrollHeight = window.innerHeight * sceneInfo.heightNum;
     };
@@ -310,6 +317,18 @@ const Visual = () => {
           }
         ));
       }
+
+      // visual이 아닐 때는 display: none으로 설정
+      // ??? : 아니왜 초기값 반영이 안되는가? 
+      // if (scrollRatio > 0.85) {
+      //   setIsVisualActive(false);
+      // }
+      // 왜 안되지?
+      if (scrollRatio < 0.85) {
+        setIsVisualActive(true);
+      } else {
+        setIsVisualActive(false);
+      }
     }
 
     setLayout();
@@ -326,6 +345,7 @@ const Visual = () => {
   return (
     <Section id="visual" scrollHeight={sceneInfo.scrollHeight}>
       <StickyElem
+        active={isVisualActive}
         opacityValue={sceneInfo.objs.messageA.opacity}
         translateYValue={sceneInfo.objs.messageA.translateY}
       >
@@ -334,6 +354,7 @@ const Visual = () => {
         </ScrollMsg>
       </StickyElem>
       <StickyElem
+        active={isVisualActive}
         opacityValue={sceneInfo.objs.messageB.opacity}
         translateYValue={sceneInfo.objs.messageB.translateY}
       >
@@ -342,6 +363,7 @@ const Visual = () => {
         </ScrollMsg>
       </StickyElem>
       <StickyElem 
+        active={isVisualActive}
         svgType="text"
         opacityValue={sceneInfo.objs.textSvg.opacity}
         translateXValue={sceneInfo.objs.textSvg.translateX}
@@ -350,12 +372,14 @@ const Visual = () => {
         <TextSvg width={`${sceneInfo.objs.textSvg.width}vw`} height="auto" />
       </StickyElem>
       <StickyElem 
+        active={isVisualActive}
         svgType="stroke" 
         dashOffset={sceneInfo.objs.stroke.dashOffset}
       >
         <Stroke width="100%" height="100%" fill="transparent" />  
       </StickyElem>
       <StickyElem
+        active={isVisualActive}
         opacityValue={sceneInfo.objs.messageC.opacity}
       >
         <StickyMsg>
