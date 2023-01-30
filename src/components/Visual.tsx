@@ -17,7 +17,7 @@ const Section = styled.section<{ scrollHeight: number }>`
       height: ${props.scrollHeight}px;
     `
   }
-  background: black;
+  background: #fcfcfc;
   text-align: center;
   @media (max-width: ${(props): number => props.theme.MOBILE_LANDSCAPE_MAX}px) {
     scroll-margin-top: ${(props): number => props.theme.MOBILE_HEADER_HEIGHT}px;
@@ -25,58 +25,78 @@ const Section = styled.section<{ scrollHeight: number }>`
   }
 `;
 
-const StickyElem = styled.div<{ svgType?: string, translateYValue?: number, translateXValue?: number, opacity?: number }>`
-  /* display: none; */
+const StickyElem = styled.div<{ 
+  svgType?: string, 
+  translateYValue?: number, 
+  translateXValue?: number, 
+  opacityValue?: number, 
+  dashOffset?: number 
+}>`
   position: fixed;
   left: 50%;
   top: 50%;
   width: 100%;
   transform: translate(-50%, -50%);
+  z-index: 10;
 
-  ${(props): string | SerializedStyles | boolean => 
-    props.svgType === "text" && css`
-      transform: translate3d(${props.translateXValue}%, -50%, 0);
-    `
-  }
-
-${(props): string | SerializedStyles | boolean => 
-    props.svgType === "stroke" && css`
-      svg {
-        min-width: 850px;
-        stroke: #FF0044;
-        stroke-width: 62;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-dasharray: 1401, 1401;
-        stroke-dashoffset: 1401;
-        transform: translate3d(0, ${props.translateYValue}%, 0);
-      }
-    `
-  }
-`;
-
-const StickyMsg = styled.p<{ opacityValue: number, translateYValue: number}>`
-  color: white;
-  font-size: 10vw;
-  font-family: ${(props): string => props.theme.defaultFontFamily};
-  font-weight: 600;
-  text-transform: uppercase;
   ${(props): number | SerializedStyles | boolean => 
     props.opacityValue > -1 && css`
       opacity: ${props.opacityValue};
     `
   }
+
   ${(props): number | SerializedStyles | undefined => 
     props.translateYValue && css`
-      transform: translate3d(0, ${props.translateYValue}%, 0);
+      transform: translate3d(-50%, ${props.translateYValue}%, 0);
     `
   }
+
+  ${(props): string | SerializedStyles | boolean => 
+    props.svgType === "text" && css`
+      transform: translate3d(${props.translateXValue}%, ${props.translateYValue}%, 0);
+      z-index: 1;
+    `
+  }
+
+${(props): boolean | number | SerializedStyles | undefined => 
+    props.svgType === "stroke" && props.dashOffset && css`
+      svg {
+        path {
+          stroke: #FF0044;
+          stroke-width: 72;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 1401;
+          stroke-dashoffset: ${props.dashOffset};
+        }
+      }
+    `
+  }
+
+  &:last-of-type {
+    transform: translate(-50%, -72%);
+  }
+`;
+
+const ScrollMsg = styled.p`
+  color: white;
+  font-size: 8vw;
+  font-family: ${(props): string => props.theme.defaultFontFamily};
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+const StickyMsg = styled.p`
+  color: white;
+  font-size: 6vw;
+  font-family: ${(props): string => props.theme.defaultFontFamily};
+  font-weight: 600;
+  text-transform: uppercase;
 `;
 
 const Visual = () => {
   const [sceneInfo, setSceneInfo] = useState(
     {
-      type: 'sticky',
       heightNum: 5,
       scrollHeight: window.innerHeight * 5,
       objs: {
@@ -89,35 +109,34 @@ const Visual = () => {
           translateY: 0
         },
         textSvg: {
-          width: 0,
+          width: 100,
           opacity: 0,
-          translateX: 0
+          translateX: -150,
+          translateY: -20
         },
         stroke: {
           opacity: 0,
-          translateY: 0
+          dashOffset: 0
         },
         messageC: {
           opacity: 0,
-          translateY: 0
         }
       },
       values: {
-        messageA_opacity_in: [1, 0, {start: 0, end: 0.1}],
-        messageB_opacity_in: [0, 1, {start: 0.2, end: 0.3}],
-        messageA_translateY_in: [0, -20, {start: 0, end: 0.1}],
-        messageB_translateY_in: [20, 0, {start: 0.35, end: 0.45}],
-        messageA_opacity_out: [1, 0, {start: 0.15, end: 0.2}],
-        messageB_opacity_out: [1, 0, {start: 0.2, end: 0.3}],
-        messageA_translateY_out: [0, -20, {start: 0.15, end: 0.2}],
-        messageB_translateY_out: [0, -20, {start: 0.35, end: 0.45}],
-        textSvg_width_in: [1000, 200, { start: 0.1, end: 0.4 }],
-				textSvg_width_out: [200, 50, { start: 0.4, end: 0.8 }],
-				textSvg_translateX_in: [-10, -20, { start: 0.2, end: 0.4 }],
-				textSvg_translateX_out: [-20, -50, { start: 0.4, end: 0.8 }],
-				textSvg_opacity_out: [1, 0, { start: 0.8, end: 0.9 }],
-        path_dashoffset_in: [1401, 0, { start: 0.2, end: 0.4 }],
-				path_dashoffset_out: [0, -1401, { start: 0.6, end: 0.8 }]
+        messageA_opacity_inout: [1, 0, {start: 0, end: 0.15}],
+        messageA_translateY_inout: [-50, -70, {start: 0, end: 0.15}],
+        messageB_opacity_in: [0, 1, {start: 0.16, end: 0.28}],
+        messageB_opacity_out: [1, 0, {start: 0.3, end: 0.45}],
+        messageB_translateY_in: [-40, -50, {start: 0.16, end: 0.28}],
+        messageB_translateY_out: [-50, -70, {start: 0.3, end: 0.45}],
+        textSvg_width_inout: [8400, 95, { start: 0.45, end: 0.62 }],
+				textSvg_translateX_inout: [-150, -50, { start: 0.45, end: 0.62 }],
+				textSvg_translateY_inout: [-57, -50, { start: 0.45, end: 0.62 }],
+				textSvg_opacity_out: [1, 0, { start: 0.78, end: 0.88 }],
+        path_dashoffset_in: [1401, 0, { start: 0.62, end: 0.73 }],
+				path_dashoffset_out: [0, -1401, { start: 0.74, end: 0.86 }],
+        messageC_opacity_in: [0, 1, {start: 0.67, end: 0.72}],
+        messageC_opacity_out: [1, 0, {start: 0.77, end: 0.8}],
       }
     }
   );
@@ -159,7 +178,6 @@ const Visual = () => {
     };
 
     const playAnimation = () => {
-      const objs = sceneInfo.objs;
       const values = sceneInfo.values;
       const scrollHeight = sceneInfo.scrollHeight;
       const yOffset = window.pageYOffset;
@@ -173,8 +191,8 @@ const Visual = () => {
             objs: {
               ...prevState.objs,
               messageA: {
-                opacity: calcValues(values.messageA_opacity_in, yOffset),
-                translateY: calcValues(values.messageA_translateY_in, yOffset)
+                opacity: calcValues(values.messageA_opacity_inout, yOffset),
+                translateY: calcValues(values.messageA_translateY_inout, yOffset)
               }
             }
           }
@@ -188,14 +206,14 @@ const Visual = () => {
               ...prevState.objs,
               messageA: {
                 opacity: 0,
-                translateY: calcValues(values.messageA_translateY_out, yOffset)
+                translateY: calcValues(values.messageA_translateY_inout, yOffset)
               }
             }
           }
         ));
       }
 
-      if (scrollRatio <= 0.3) {
+      if (scrollRatio <= 0.35) {
         // in
         setSceneInfo((prevState) => (
           {
@@ -225,39 +243,73 @@ const Visual = () => {
         ));
       }
 
-      // if (scrollRatio <= 0.4) {
-      //   setSceneInfo((prevState) => (
-      //     {
-      //       ...prevState,
-      //       objs: {
-      //         ...prevState.objs,
-      //         textSvg: {
-      //           width: 0,
-      //           opacity: 0,
-      //           translateX: 0,
-      //           opacity: calcValues(values.messageB_opacity_out, yOffset),
-      //           translateY: calcValues(values.messageB_translateY_out, yOffset)
-      //         }
-      //       }
-      //     }
-      //   ));
-      //   objs.pencilLogo.style.width = `${calcValues(values.pencilLogo_width_in, currentYOffset)}vw`;
-      //   objs.pencilLogo.style.transform = `translate(${calcValues(values.pencilLogo_translateX_in, currentYOffset)}%, -50%)`;
-      // } else {
-      //   objs.pencilLogo.style.width = `${calcValues(values.pencilLogo_width_out, currentYOffset)}vw`;
-      //   objs.pencilLogo.style.transform = `translate(${calcValues(values.pencilLogo_translateX_out, currentYOffset)}%, -50%)`;
-      // }
+      if (scrollRatio <= 0.5) {
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              ...prevState.objs,
+              textSvg: {
+                width: calcValues(values.textSvg_width_inout, yOffset),
+                opacity: 1,
+                translateX: calcValues(values.textSvg_translateX_inout, yOffset),
+                translateY: calcValues(values.textSvg_translateY_inout, yOffset)
+              }
+            }
+          }
+        ));
+      } else {
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              ...prevState.objs,
+              textSvg: {
+                // ...prevState.objs.textSvg,
+                // ??? : prevState값으로 넣으니깐 이전값에 저장되어있던 값에서 멈춘다.. 
+                width:  calcValues(values.textSvg_width_inout, yOffset),
+                opacity: calcValues(values.textSvg_opacity_out, yOffset),
+                translateX: calcValues(values.textSvg_translateX_inout, yOffset),
+                translateY: calcValues(values.textSvg_translateY_inout, yOffset)
+              }
+            }
+          }
+        ));
+      }
 
-      // // 빨간 리본 패스(줄 긋기)
-      // if (scrollRatio <= 0.5) {
-      //   objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_in, currentYOffset);
-      // } else {
-      //   objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_out, currentYOffset);
-      // }
-
-      // objs.pencilLogo.style.opacity = calcValues(values.pencilLogo_opacity_out, currentYOffset);
-
-      console.log('✈✈', objs.messageA.opacity);
+      if (scrollRatio <= 0.725) {
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              ...prevState.objs,
+              stroke: {
+                opacity: 1,
+                dashOffset: calcValues(values.path_dashoffset_in, yOffset)
+              },
+              messageC: {
+                opacity: calcValues(values.messageC_opacity_in, yOffset)
+              }
+            }
+          }
+        ));
+      } else {
+        setSceneInfo((prevState) => (
+          {
+            ...prevState,
+            objs: {
+              ...prevState.objs,
+              stroke: {
+                opacity: 1,
+                dashOffset: calcValues(values.path_dashoffset_out, yOffset)
+              },
+              messageC: {
+                opacity: calcValues(values.messageC_opacity_out, yOffset)
+              }
+            }
+          }
+        ));
+      }
     }
 
     setLayout();
@@ -273,51 +325,46 @@ const Visual = () => {
 
   return (
     <Section id="visual" scrollHeight={sceneInfo.scrollHeight}>
-      <StickyElem>
-        <StickyMsg 
-          opacityValue={sceneInfo.objs.messageA.opacity}
-          translateYValue={sceneInfo.objs.messageA.translateY}
-        >
+      <StickyElem
+        opacityValue={sceneInfo.objs.messageA.opacity}
+        translateYValue={sceneInfo.objs.messageA.translateY}
+      >
+        <ScrollMsg>
           Are you curious
-        </StickyMsg>
+        </ScrollMsg>
       </StickyElem>
-      <StickyElem>
-        <StickyMsg 
-          opacityValue={sceneInfo.objs.messageB.opacity}
-          translateYValue={sceneInfo.objs.messageB.translateY}
-        >
+      <StickyElem
+        opacityValue={sceneInfo.objs.messageB.opacity}
+        translateYValue={sceneInfo.objs.messageB.translateY}
+      >
+        <ScrollMsg>
           about who I am
+        </ScrollMsg>
+      </StickyElem>
+      <StickyElem 
+        svgType="text"
+        opacityValue={sceneInfo.objs.textSvg.opacity}
+        translateXValue={sceneInfo.objs.textSvg.translateX}
+        translateYValue={sceneInfo.objs.textSvg.translateY}
+      >
+        <TextSvg width={`${sceneInfo.objs.textSvg.width}vw`} height="auto" />
+      </StickyElem>
+      <StickyElem 
+        svgType="stroke" 
+        dashOffset={sceneInfo.objs.stroke.dashOffset}
+      >
+        <Stroke width="100%" height="100%" fill="transparent" />  
+      </StickyElem>
+      <StickyElem
+        opacityValue={sceneInfo.objs.messageC.opacity}
+      >
+        <StickyMsg>
+          scroll
+        </StickyMsg>
+        <StickyMsg>
+          down
         </StickyMsg>
       </StickyElem>
-      <StickyElem svgType="text">
-        <TextSvg width={sceneInfo.objs.textSvg.width} height="auto" />
-      </StickyElem>
-      <StickyElem>
-        <Stroke />  
-      </StickyElem>
-      <StickyElem svgType="stroke">
-        <StickyMsg 
-          opacityValue={sceneInfo.objs.messageC.opacity}
-          translateYValue={sceneInfo.objs.messageC.translateY}
-        >
-          Show me
-        </StickyMsg>
-      </StickyElem>
-      {/* <StickyElem>
-        <StickyText className='message_b'>curious</StickyText>
-      </StickyElem>
-      <StickyElem>
-        <StickyText className='message_c'>about</StickyText>
-      </StickyElem>
-      <StickyElem>
-        <StickyText className='message_d'>who I am</StickyText>
-      </StickyElem>
-      <StickyElem>
-        <Stroke width="100vw" height="100vh" fill="none" />
-      </StickyElem>
-      <StickyElem>
-        <StickyText className='message_e'>Show Me</StickyText>
-      </StickyElem> */}
     </Section>
   );
 };
