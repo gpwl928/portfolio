@@ -106,7 +106,7 @@ const ResetCss: React.FC<Props> = ({ theme }) => {
           &::-webkit-scrollbar {
             width: 6px;
           }
-          &::-webkit-scrollbar-thumb {
+          /* &::-webkit-scrollbar-thumb {
             background-color: ${theme.textBasicColor2};
             border-radius: 5px;
           }
@@ -115,7 +115,7 @@ const ResetCss: React.FC<Props> = ({ theme }) => {
           }
           &::-webkit-scrollbar-thumb:hover {
             background-color: #fff;
-          }
+          } */
         }
         article,
         aside,
