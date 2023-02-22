@@ -12,7 +12,7 @@ const HamburgerBtnStyle = css`
   transition: all 0.5s ease;
 `;
 
-const MainHeader = styled.header<{ isHeader: boolean }>`
+const MainHeader = styled.header<{ isHeader: boolean | undefined }>`
   display: flex;
   align-items: center;
   position: fixed;
@@ -51,7 +51,7 @@ const MenuUl = styled.ul`
   }
 `;
 
-const MenuLi = styled.li<{ isActvie: boolean }>`
+const MenuLi = styled.li<{ isActive: boolean }>`
   display: flex;
   align-items: center;
   padding: 16px 12px;
@@ -66,7 +66,7 @@ const MenuLi = styled.li<{ isActvie: boolean }>`
       color: red;
     }
   }
-  ${(props): boolean | undefined => 
+  ${(props): boolean | SerializedStyles | undefined => 
     props.isActive && css `
       color: red;
     `
@@ -162,7 +162,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection, isSticky }) => {
     <MainHeader isHeader={isSticky}>
       {/* <Logo>Potofolio</Logo> */}
       <MenuUl>
-        {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
+        {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item: any) => {
           return (
             <MenuLi 
               key={item.key}
@@ -182,7 +182,7 @@ const Header: React.FC<HeaderProps> = ({ currentSection, isSticky }) => {
       {isMobileVisible && (
         <MobileMenu>
           <MobileMenuUl>
-            {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item) => {
+            {HEADER_ITEM_LIST && HEADER_ITEM_LIST.map((item: any) => {
               return (
                 <MenuLi 
                   key={item.key}
