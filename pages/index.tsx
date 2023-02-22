@@ -63,7 +63,7 @@ export const Home = () => {
 
       // TODO : 첫 화면 로딩시 visual Section보다 다른 Section이 빨리 렌더링 되어서 위치가 정확하지 않으므로,
       // 임시방편으로 position.top > 0이라는 조건을 넣었다
-      const currentId = position?.top > 0 && (position?.id || '');
+      const currentId = position?.top > 0 ? position?.id : '';
       setActiveId(currentId);
       setIsSticky(currentId ? true : false);
     }
