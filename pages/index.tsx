@@ -49,13 +49,6 @@ export const Home = () => {
   const router = useRouter;
 
   useEffect(() => {
-    const setLayout = ():void => {
-      console.log('😊😊😊😊👀👀setLayout');
-      // window.location.hash = '';
-      // scrollTo({top: 0});
-      // setActiveId('');
-    }
-
     const listener = ():void => {
       const scroll = window.pageYOffset;
       const position = HEADER_ITEM_LIST.map((item) => {
@@ -68,15 +61,15 @@ export const Home = () => {
         return { id: item.key, top, bottom };
       }).find(({ top, bottom }) => isBetween(scroll, top, bottom));
 
-      const currentId = position?.id || '';
+      // TODO : 첫 화면 로딩시 visual Section보다 다른 Section이 빨리 렌더링 되어서 위치가 정확하지 않으므로,
+      // 임시방편으로 position.top > 0이라는 조건을 넣었다
+      const currentId = position?.top > 0 && (position?.id || '');
       setActiveId(currentId);
       setIsSticky(currentId ? true : false);
     }
 
     listener();
 
-    //TODO: 새로고침시 hash문제 해결하기
-    window.addEventListener('load', setLayout);
     window.addEventListener('resize', listener);
     window.addEventListener('scroll', listener);
 
@@ -84,7 +77,7 @@ export const Home = () => {
       window.removeEventListener('resize', listener);
       window.removeEventListener('scroll', listener);
     };
-  });
+  }, []);
 
   return (
     <>
