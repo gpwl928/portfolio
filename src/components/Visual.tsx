@@ -143,7 +143,7 @@ const Visual = () => {
 				textSvg_translateY_inout: [-57, -50, { start: 0.45, end: 0.62 }],
 				textSvg_opacity_out: [1, 0, { start: 0.78, end: 0.88 }],
         path_dashoffset_in: [1401, 0, { start: 0.62, end: 0.73 }],
-				path_dashoffset_out: [0, -1401, { start: 0.74, end: 0.86 }],
+				path_dashoffset_out: [0, -1401, { start: 0.73, end: 0.86 }],
         messageC_opacity_in: [0, 1, {start: 0.67, end: 0.72}],
         messageC_opacity_out: [1, 0, {start: 0.77, end: 0.8}],
       }
@@ -284,7 +284,7 @@ const Visual = () => {
         ));
       }
 
-      if (scrollRatio <= 0.725) {
+      if (scrollRatio <= 0.73) {
         setSceneInfo((prevState) => (
           {
             ...prevState,
