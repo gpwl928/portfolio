@@ -106,7 +106,7 @@ const Visual = () => {
   const [sceneInfo, setSceneInfo] = useState(
     {
       heightNum: 5,
-      scrollHeight: 0,
+      scrollHeight: window.innerHeight * 5,
       objs: {
         messageA: {
           opacity: 1,
@@ -117,8 +117,8 @@ const Visual = () => {
           translateY: 0
         },
         textSvg: {
-          width: 100,
-          opacity: 0,
+          width: 8500,
+          opacity: 1,
           translateX: -150,
           translateY: -20
         },
@@ -324,7 +324,7 @@ const Visual = () => {
       //   setIsVisualActive(false);
       // }
       // 왜 안되지?
-      if (scrollRatio < 0.85) {
+      if (scrollRatio < 0.9) {
         setIsVisualActive(true);
       } else {
         setIsVisualActive(false);
@@ -369,7 +369,7 @@ const Visual = () => {
         translateXValue={sceneInfo.objs.textSvg.translateX}
         translateYValue={sceneInfo.objs.textSvg.translateY}
       >
-        <TextSvg width={`${sceneInfo.objs.textSvg.width}vw`} height="auto" />
+        <TextSvg width={`${sceneInfo.objs.textSvg.width}vw`} height="100%" fill="black" />
       </StickyElem>
       <StickyElem 
         active={isVisualActive}
